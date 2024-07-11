@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+{% block title %}Stagiaire Index{% endblock %}
+{% block body %}
+    <h1 class="text-2xl font-bold mb-4">Stagiaires</h1>
+    <a href="{{ path('app_stagiaire_new') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4 inline-block">Create new</a>
+    <button id="reset-password" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mb-4 inline-block">Réinitialiser password</button>
+    {# Search Form #}
+    <form action="{{ path('app_stagiaire_index') }}" method="get" class="mb-4 flex justify-end">
+        <input type="text" name="q" placeholder="Search..." class="border rounded py-2 px-3 text-gray-700">
+        <button type="submit" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded ml-2">Search</button>
+    </form>
+    <p class="text-gray-600 text-sm mb-4">You can search by ID, Nom, Prenom, Email, or Login.</p>
+    {# Stagiaire Table with checkboxes #}
+    <form id="stagiaire-form" action="{{ path('app_stagiaire_reset_password') }}" method="post">
+        <table class="min-w-full bg-white shadow-md rounded my-6">
+            <thead>
+            <tr class="bg-gray-800 text-white uppercase text-sm leading-normal">
+                <th class="py-3 px-6 text-left">Select</th>
+                <th class="py-3 px-6 text-left">ID</th>
+                <th class="py-3 px-6 text-left">Nom</th>
+                <th class="py-3 px-6 text-left">Prenom</th>
+                <th class="py-3 px-6 text-left">Email</th>
+                <th class="py-3 px-6 text-left">LogIn</th>
+                <th class="py-3 px-6 text-center">Actions</th>
+            </tr>
+            </thead>
+            <tbody class="text-gray-600 text-sm font-light">
+            {% for stagiaire in stagiaires %}
+                <tr class="border-b border-gray-200 hover:bg-gray-100">
+                    <td class="py-3 px-6 text-left whitespace-nowrap">
+                        <input type="checkbox" name="selected[]" value="{{ stagiaire.id }}">
+                    </td>
+                    <td class="py-3 px-6 text-left whitespace-nowrap">{{ stagiaire.id }}</td>
+                    <td class="py-3 px-6 text-left">{{ stagiaire.nom }}</td>
+                    <td class="py-3 px-6 text-left">{{ stagiaire.prenom }}</td>
+                    <td class="py-3 px-6 text-left">{{ stagiaire.email }}</td>
+                    <td class="py-3 px-6 text-left">{{ stagiaire.login }}</td>
+                    <td class="py-3 px-6 text-center">
+                        <a href="{{ path('app_stagiaire_show', {'id': stagiaire.id}) }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-3 rounded">Show</a>
+                        <a href="{{ path('app_stagiaire_edit', {'id': stagiaire.id}) }}" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-3 rounded">Edit</a>
+                        <form method="post" action="{{ path('app_stagiaire_delete', {'id': stagiaire.id}) }}" style="display:inline-block;">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ stagiaire.id) }}">
+                            <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded" onclick="return confirm('Are you sure?');">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td colspan="7" class="py-3 px-6 text-center">No stagiaires found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </form>
+    <script>
+        document.getElementById('reset-password').addEventListener('click', function () {
+            let form = document.getElementById('stagiaire-form');
+            form.submit();
+        });
+    </script>
+{% endblock %}

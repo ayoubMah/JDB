@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+{% block title %}Détails de l'Admin{% endblock %}
+{% block body %}
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold mb-6 text-gray-800">Détails de l'Admin</h1>
+        <div class="bg-white shadow-md rounded-lg overflow-hidden p-6">
+            <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
+                <div class="sm:col-span-1">
+                    <dt class="text-sm font-medium text-gray-500">Nom d'utilisateur</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ admin.username }}</dd>
+                </div>
+                <div class="sm:col-span-1">
+                    <dt class="text-sm font-medium text-gray-500">Mot de passe</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ admin.password }}</dd>
+                </div>
+            </dl>
+        </div>
+        <div class="mt-6 flex space-x-3">
+            <a href="{{ path('app_admin_edit', {'id': admin.id}) }}" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Modifier</a>
+            <a href="{{ path('app_admin_index') }}" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">Retour à la liste</a>
+            <form method="post" action="{{ path('app_admin_delete', {'id': admin.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet admin ?');" class="inline-block">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ admin.id) }}">
+                <button class="bg-red-500 hover:bg-red-600 text-white font-bold py-2 px-4 rounded">Supprimer</button>
+            </form>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Détails du Stagiaire{% endblock %}
+
+{% block body %}
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold mb-6 text-gray-800">Détails du Stagiaire</h1>
+        <div class="bg-white shadow-md rounded-lg overflow-hidden p-6">
+            <dl class="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-2">
+                <div class="sm:col-span-1">
+                    <dt class="text-sm font-medium text-gray-500">Nom</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ stagiaire.nom }}</dd>
+                </div>
+                <div class="sm:col-span-1">
+                    <dt class="text-sm font-medium text-gray-500">Prénom</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ stagiaire.prenom }}</dd>
+                </div>
+                <div class="sm:col-span-1">
+                    <dt class="text-sm font-medium text-gray-500">Email</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ stagiaire.email }}</dd>
+                </div>
+
+                <div class="sm:col-span-1">
+                    <dt class="text-sm font-medium text-gray-500">LogIn</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ stagiaire.login }}</dd>
+                </div>
+
+
+{#                <div class="sm:col-span-1">#}
+{#                    <dt class="text-sm font-medium text-gray-500">Password</dt>#}
+{#                    <dd class="mt-1 text-sm text-gray-900">{{ stagiaire.password }}</dd>#}
+{#                </div>#}
+
+                <div class="sm:col-span-1">
+                    <dt class="text-sm font-medium text-gray-500">Admin ID</dt>
+                    <dd class="mt-1 text-sm text-gray-900">{{ stagiaire.adminId }}</dd>
+                </div>
+            </dl>
+        </div>
+        <div class="mt-6 flex space-x-3">
+            <a href="{{ path('app_stagiaire_edit', {'id': stagiaire.id}) }}" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Modifier</a>
+            <a href="{{ path('app_stagiaire_index') }}" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">Retour à la liste</a>
+            {{ include('stagiaire/_delete_form.html.twig') }}
+        </div>
+    </div>
+{% endblock %}

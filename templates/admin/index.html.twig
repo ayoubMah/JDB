@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Admin Index{% endblock %}
+
+{% block body %}
+    <h1 class="text-2xl font-bold mb-4">Admins</h1>
+    <a href="{{ path('app_admin_new') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4 inline-block">Create new</a>
+    <table class="min-w-full bg-white shadow-md rounded my-6">
+        <thead>
+        <tr class="bg-gray-800 text-white uppercase text-sm leading-normal">
+            <th class="py-3 px-6 text-left">ID</th>
+            <th class="py-3 px-6 text-left">Username</th>
+            <th class="py-3 px-6 text-center">Actions</th>
+        </tr>
+        </thead>
+        <tbody class="text-gray-600 text-sm font-light">
+        {% for admin in admins %}
+            <tr class="border-b border-gray-200 hover:bg-gray-100">
+                <td class="py-3 px-6 text-left whitespace-nowrap">{{ admin.id }}</td>
+                <td class="py-3 px-6 text-left">{{ admin.username }}</td>
+                <td class="py-3 px-6 text-center">
+                    <a href="{{ path('app_admin_show', {'id': admin.id}) }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-3 rounded">Show</a>
+                    <a href="{{ path('app_admin_edit', {'id': admin.id}) }}" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-3 rounded">Edit</a>
+                    <form method="post" action="{{ path('app_admin_delete', {'id': admin.id}) }}" style="display:inline-block;">
+                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ admin.id) }}">
+                        <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded" onclick="return confirm('Are you sure?');">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="3" class="py-3 px-6 text-center">No admins found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

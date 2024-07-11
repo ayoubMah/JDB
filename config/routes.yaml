@@ -1,5 +1,31 @@
+# config/routes/attributes.yaml
 controllers:
     resource:
         path: ../src/Controller/
         namespace: App\Controller
     type: attribute
+
+
+blog_list:
+        path: /blog
+        # the controller value has the format 'controller_class::method_name'
+        controller: App\Controller\BlogController::list
+
+api_post_show:
+        path: api/posts/{id}
+        controller: App\Controller\BlogController::show
+        methods: GET|HEAD
+
+api_post-edit:
+        path: api/posts/{id}
+        controller: App\Controller\BlogController::edit
+        methods: PUT
+        condition: "params['id'] < 1000"
+
+# a route for the password reset action
+app_stagiaire_reset_password:
+    path: /stagiaire/reset-password
+    controller: App\Controller\StagiaireController::resetPassword
+    methods: [POST]
+
+

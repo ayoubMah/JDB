@@ -1,3 +1,7 @@
 body {
-    background-color: skyblue;
+    background-color: white;
+
+    @tailwind base;
+    @tailwind components;
+    @tailwind utilities;
 }

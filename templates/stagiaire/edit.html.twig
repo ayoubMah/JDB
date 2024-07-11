@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Stagiaire{% endblock %}
+
+{% block body %}
+    <h1 class="text-2xl font-bold mb-4">Edit Stagiaire</h1>
+    {{ form_start(form) }}
+    <div class="bg-white p-6 rounded-lg shadow-lg grid grid-cols-2 gap-4">
+        <div>
+            {{ form_row(form.nom, {'attr': {'class': 'border rounded w-full py-2 px-3 text-gray-700'}}) }}
+            {{ form_row(form.prenom, {'attr': {'class': 'border rounded w-full py-2 px-3 text-gray-700'}}) }}
+            {{ form_row(form.email, {'attr': {'class': 'border rounded w-full py-2 px-3 text-gray-700'}}) }}
+        </div>
+        <div>
+            {{ form_row(form.login, {'attr': {'class': 'border rounded w-full py-2 px-3 text-gray-700'}}) }}
+            {{ form_row(form.password, {'attr': {'class': 'border rounded w-full py-2 px-3 text-gray-700'}}) }}
+            {{ form_row(form.admin_id, {'attr': {'class': 'border rounded w-full py-2 px-3 text-gray-700'}}) }}
+        </div>
+        <div class="col-span-2 flex justify-end mt-4">
+            <a href="{{ path('app_stagiaire_index') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mr-2">Back to list</a>
+            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="submit">Save</button>
+        </div>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
