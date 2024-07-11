@@ -85,9 +85,7 @@ class StagiaireController extends AbstractController
         return $this->redirectToRoute('app_stagiaire_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    /**
-     * @Route("/stagiaire/reset-password", name="app_stagiaire_reset_password", methods={"POST"})
-     */
+    #[Route('/stagiaire/reset-password', name: 'app_stagiaire_reset_password', methods: ['POST'])]
     public function resetPassword(Request $request, EntityManagerInterface $em, UserPasswordHasherInterface $passwordHasher): RedirectResponse
     {
         $selectedIds = $request->request->get('selected', []);
@@ -117,11 +115,8 @@ class StagiaireController extends AbstractController
         }
 
         $em->flush();
-
         return $this->redirectToRoute('app_stagiaire_index');
     }
-
-
 }
 
 
