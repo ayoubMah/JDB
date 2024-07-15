@@ -1,25 +1,45 @@
+{# templates/stagiaire/edit.html.twig #}
+
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Stagiaire{% endblock %}
+{% block title %}Modifier le Stagiaire{% endblock %}
 
 {% block body %}
-    <h1 class="text-2xl font-bold mb-4">Edit Stagiaire</h1>
-    {{ form_start(form) }}
-    <div class="bg-white p-6 rounded-lg shadow-lg grid grid-cols-2 gap-4">
-        <div>
-            {{ form_row(form.nom, {'attr': {'class': 'border rounded w-full py-2 px-3 text-gray-700'}}) }}
-            {{ form_row(form.prenom, {'attr': {'class': 'border rounded w-full py-2 px-3 text-gray-700'}}) }}
-            {{ form_row(form.email, {'attr': {'class': 'border rounded w-full py-2 px-3 text-gray-700'}}) }}
-        </div>
-        <div>
-            {{ form_row(form.login, {'attr': {'class': 'border rounded w-full py-2 px-3 text-gray-700'}}) }}
-            {{ form_row(form.password, {'attr': {'class': 'border rounded w-full py-2 px-3 text-gray-700'}}) }}
-            {{ form_row(form.admin_id, {'attr': {'class': 'border rounded w-full py-2 px-3 text-gray-700'}}) }}
-        </div>
-        <div class="col-span-2 flex justify-end mt-4">
-            <a href="{{ path('app_stagiaire_index') }}" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded mr-2">Back to list</a>
-            <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" type="submit">Save</button>
+    <div class="container mx-auto px-4 py-8">
+        <h1 class="text-3xl font-bold mb-6 text-gray-800">Modifier le Stagiaire</h1>
+        <div class="bg-white shadow-md rounded-lg overflow-hidden p-6">
+            {{ form_start(form) }}
+            <div class="grid grid-cols-1 gap-6 sm:grid-cols-2">
+                <div>
+                    {{ form_label(form.nom, 'Nom', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+                    {{ form_widget(form.nom, {'attr': {'class': 'mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'}}) }}
+                </div>
+                <div>
+                    {{ form_label(form.prenom, 'Prénom', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+                    {{ form_widget(form.prenom, {'attr': {'class': 'mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'}}) }}
+                </div>
+                <div>
+                    {{ form_label(form.email, 'Email', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+                    {{ form_widget(form.email, {'attr': {'class': 'mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'}}) }}
+                </div>
+                <div>
+                    {{ form_label(form.login, 'Login', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+                    {{ form_widget(form.login, {'attr': {'class': 'mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'}}) }}
+                </div>
+                <div>
+                    {{ form_label(form.password, 'Mot de passe', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+                    {{ form_widget(form.password, {'attr': {'class': 'mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'}}) }}
+                </div>
+                <div>
+                    {{ form_label(form.adminId, 'Admin ID', {'label_attr': {'class': 'block text-sm font-medium text-gray-700'}}) }}
+                    {{ form_widget(form.adminId, {'attr': {'class': 'mt-1 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md'}}) }}
+                </div>
+            </div>
+            <div class="mt-6 flex justify-end space-x-3">
+                <button type="submit" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded">Enregistrer</button>
+                <a href="{{ path('app_stagiaire_index') }}" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">Retour à la liste</a>
+            </div>
+            {{ form_end(form) }}
         </div>
     </div>
-    {{ form_end(form) }}
 {% endblock %}

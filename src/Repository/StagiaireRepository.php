@@ -6,9 +6,6 @@ use App\Entity\Stagiaire;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-/**
- * @extends ServiceEntityRepository<Stagiaire>
- */
 class StagiaireRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)

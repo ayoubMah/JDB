@@ -5,6 +5,7 @@ namespace App\Entity;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\StagiaireRepository;
 
 #[ORM\Entity(repositoryClass: StagiaireRepository::class)]
 class Stagiaire implements UserInterface, PasswordAuthenticatedUserInterface

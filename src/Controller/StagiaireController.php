@@ -59,18 +59,29 @@ class StagiaireController extends AbstractController
     #[Route('/{id}', name: 'app_stagiaire_show', methods: ['GET'])]
     public function show(Stagiaire $stagiaire): Response
     {
+        if(!$stagiaire){
+            throw $this->createNotFoundException('The stagiaire does not exist');
+        }
         return $this->render('stagiaire/show.html.twig', [
             'stagiaire' => $stagiaire,
         ]);
     }
 
+
     #[Route('/{id}/edit', name: 'app_stagiaire_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Stagiaire $stagiaire, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Stagiaire $stagiaire, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {
         $form = $this->createForm(StagiaireType::class, $stagiaire);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Handle password update
+            $newPassword = $form->get('password')->getData();
+            if ($newPassword) {
+                $hashedPassword = $passwordHasher->hashPassword($stagiaire, $newPassword);
+                $stagiaire->setPassword($hashedPassword);
+            }
+
             $entityManager->flush();
 
             return $this->redirectToRoute('app_stagiaire_index', [], Response::HTTP_SEE_OTHER);
@@ -78,9 +89,10 @@ class StagiaireController extends AbstractController
 
         return $this->render('stagiaire/edit.html.twig', [
             'stagiaire' => $stagiaire,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
+
 
     #[Route('/{id}', name: 'app_stagiaire_delete', methods: ['POST'])]
     public function delete(Request $request, Stagiaire $stagiaire, EntityManagerInterface $entityManager): Response
