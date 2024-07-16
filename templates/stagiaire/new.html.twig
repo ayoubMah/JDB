@@ -1,3 +1,5 @@
+{# templates/stagiaire/create.html.twig #}
+
 {% extends 'base.html.twig' %}
 
 {% block title %}Create New Stagiaire{% endblock %}
@@ -14,6 +16,10 @@
         <div>
             {{ form_row(form.login, {'attr': {'class': 'border rounded w-full py-2 px-3 text-gray-700'}}) }}
             {{ form_row(form.admin_id, {'attr': {'class': 'border rounded w-full py-2 px-3 text-gray-700'}}) }}
+            {{ form_row(form.password, {'attr': {'class': 'border rounded w-full py-2 px-3 text-gray-700'}}) }}
+        </div>
+        <div class="col-span-2 mt-4">
+            <p class="text-sm text-gray-600">The default password for new Stagiaire is <strong>123456789</strong>.</p>
         </div>
         <div class="col-span-2 flex justify-end mt-4">
             <button class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mr-2" type="submit">Save</button>

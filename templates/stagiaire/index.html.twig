@@ -1,117 +1,67 @@
+{# templates/stagiaire/index.html.twig #}
+
 {% extends 'base.html.twig' %}
 
 {% block title %}Stagiaire Index{% endblock %}
 
 {% block body %}
-    <div class="container mx-auto px-4 py-8">
-        <h1 class="text-2xl font-bold mb-4">Stagiaires</h1>
+    <h1 class="text-2xl font-bold mb-4">Stagiaires</h1>
+    <a href="{{ path('app_stagiaire_new') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4 inline-block">Create new</a>
 
-        {# Add this block for displaying flash messages #}
-        {% for label, messages in app.flashes %}
-            {% for message in messages %}
-                <div class="mb-4 p-4 text-white {{ label == 'success' ? 'bg-green-500' : 'bg-red-500' }} rounded">
-                    {{ message }}
-                </div>
-            {% endfor %}
-        {% endfor %}
+    {# Search Form #}
+    <form action="{{ path('app_stagiaire_index') }}" method="get" class="mb-4">
+        <div class="flex justify-end">
+            <input type="text" name="q" placeholder="Search..." class="border rounded py-2 px-3 text-gray-700">
+            <button type="submit" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded ml-2">Search</button>
+        </div>
+        <p class="text-gray-600 text-sm mt-2 text-right">You can search by ID, Nom, Prenom, Email, or Login.</p>
+    </form>
 
-        <a href="{{ path('app_stagiaire_new') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4 inline-block">Create new</a>
-        <button id="reset-password" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mb-4 inline-block">Réinitialiser mot de passe</button>
-
-        {# Search Form #}
-        <form action="{{ path('app_stagiaire_index') }}" method="get" class="mb-4">
-            <div class="flex justify-end">
-                <input type="text" name="q" placeholder="Search..." class="border rounded py-2 px-3 text-gray-700">
-                <button type="submit" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded ml-2">Search</button>
-            </div>
-            <p class="text-gray-600 text-sm mt-1 text-right">You can search by ID, Nom, Prenom, Email, or Login.</p>
-        </form>
-
-        {# Stagiaire Table with checkboxes #}
-        <form id="stagiaire-form" method="post">
-            <table class="min-w-full bg-white shadow-md rounded my-6">
-                <thead>
-                <tr class="bg-gray-800 text-white uppercase text-sm leading-normal">
-                    <th class="py-3 px-6 text-left">Select</th>
-                    <th class="py-3 px-6 text-left">ID</th>
-                    <th class="py-3 px-6 text-left">Nom</th>
-                    <th class="py-3 px-6 text-left">Prenom</th>
-                    <th class="py-3 px-6 text-left">Email</th>
-                    <th class="py-3 px-6 text-left">LogIn</th>
-                    <th class="py-3 px-6 text-center">Actions</th>
+    {# Stagiaire Table with checkboxes #}
+    <form id="stagiaire-form" action="{{ path('app_stagiaire_reset_password') }}" method="post">
+        <table class="min-w-full bg-white shadow-md rounded my-6">
+            <thead>
+            <tr class="bg-gray-800 text-white uppercase text-sm leading-normal">
+                <th class="py-3 px-6 text-left">Select</th>
+                <th class="py-3 px-6 text-left">ID</th>
+                <th class="py-3 px-6 text-left">Nom</th>
+                <th class="py-3 px-6 text-left">Prenom</th>
+                <th class="py-3 px-6 text-left">Email</th>
+                <th class="py-3 px-6 text-left">Login</th>
+                <th class="py-3 px-6 text-center">Actions</th>
+            </tr>
+            </thead>
+            <tbody class="text-gray-600 text-sm font-light">
+            {% for stagiaire in stagiaires %}
+                <tr class="border-b border-gray-200 hover:bg-gray-100">
+                    <td class="py-3 px-6 text-left whitespace-nowrap">
+                        <input type="checkbox" name="selected[]" value="{{ stagiaire.id }}">
+                    </td>
+                    <td class="py-3 px-6 text-left whitespace-nowrap">{{ stagiaire.id }}</td>
+                    <td class="py-3 px-6 text-left">{{ stagiaire.nom }}</td>
+                    <td class="py-3 px-6 text-left">{{ stagiaire.prenom }}</td>
+                    <td class="py-3 px-6 text-left">{{ stagiaire.email }}</td>
+                    <td class="py-3 px-6 text-left">{{ stagiaire.login }}</td>
+                    <td class="py-3 px-6 text-center">
+                        <a href="{{ path('app_stagiaire_show', {'id': stagiaire.id}) }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-3 rounded">Show</a>
+                        <a href="{{ path('app_stagiaire_edit', {'id': stagiaire.id}) }}" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-3 rounded">Edit</a>
+                        <form method="post" action="{{ path('app_stagiaire_delete', {'id': stagiaire.id}) }}" style="display:inline-block;">
+                            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ stagiaire.id) }}">
+                            <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded" onclick="return confirm('Are you sure?');">Delete</button>
+                        </form>
+                        {# Add reset password button for each stagiaire #}
+                        <form method="post" action="{{ path('app_stagiaire_reset_password', {'id': stagiaire.id}) }}" style="display:inline-block;">
+                            <input type="hidden" name="_token" value="{{ csrf_token('reset_password' ~ stagiaire.id) }}">
+                            <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded">Reset Password</button>
+                        </form>
+                    </td>
                 </tr>
-                </thead>
-                <tbody class="text-gray-600 text-sm font-light">
-                {% for stagiaire in stagiaires %}
-                    <tr class="border-b border-gray-200 hover:bg-gray-100">
-                        <td class="py-3 px-6 text-left whitespace-nowrap">
-                            <label>
-                                <input type="checkbox" name="selected[]" value="{{ stagiaire.id }}">
-                            </label>
-                        </td>
-                        <td class="py-3 px-6 text-left whitespace-nowrap">{{ stagiaire.id }}</td>
-                        <td class="py-3 px-6 text-left">{{ stagiaire.nom }}</td>
-                        <td class="py-3 px-6 text-left">{{ stagiaire.prenom }}</td>
-                        <td class="py-3 px-6 text-left">{{ stagiaire.email }}</td>
-                        <td class="py-3 px-6 text-left">{{ stagiaire.login }}</td>
-                        <td class="py-3 px-6 text-center">
-                            <a href="{{ path('app_stagiaire_show', {'id': stagiaire.id}) }}" class="bg-green-500 hover:bg-green-700 text-white font-bold py-1 px-3 rounded">Show</a>
-                            <a href="{{ path('app_stagiaire_edit', {'id': stagiaire.id}) }}" class="bg-yellow-500 hover:bg-yellow-700 text-white font-bold py-1 px-3 rounded">Edit</a>
-                            <form method="post" action="{{ path('app_stagiaire_delete', {'id': stagiaire.id}) }}" style="display:inline-block;">
-                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ stagiaire.id) }}">
-                                <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded" onclick="return confirm('Are you sure?');">Delete</button>
-                            </form>
-                        </td>
-                    </tr>
-                {% else %}
-                    <tr>
-                        <td colspan="7" class="py-3 px-6 text-center">No stagiaires found</td>
-                    </tr>
-                {% endfor %}
-                </tbody>
-            </table>
-        </form>
-    </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const resetPasswordButton = document.getElementById('reset-password');
-            const form = document.getElementById('stagiaire-form');
-
-            resetPasswordButton.addEventListener('click', function(e) {
-                e.preventDefault();
-                const selectedCheckboxes = form.querySelectorAll('input[name="selected[]"]:checked');
-                const selectedIds = Array.from(selectedCheckboxes).map(cb => cb.value);
-
-                if (selectedIds.length === 0) {
-                    alert('Please select at least one stagiaire.');
-                    return;
-                }
-
-                if (confirm('Are you sure you want to reset the password for the selected stagiaire(s)?')) {
-                    fetch('{{ path('app_stagiaire_reset_password') }}', {
-                        method: 'POST',
-                        headers: {
-                            'Content-Type': 'application/x-www-form-urlencoded',
-                            'X-Requested-With': 'XMLHttpRequest'
-                        },
-                        body: new URLSearchParams({
-                            selected: selectedIds
-                        })
-                    })
-                        .then(response => response.json())
-                        .then(data => {
-                            alert(data.message);
-                            location.reload();
-                        })
-                        .catch(error => {
-                            console.error('Error:', error);
-                            alert('An error occurred while resetting passwords.');
-                        });
-                }
-            });
-        });
-    </script>
+            {% else %}
+                <tr>
+                    <td colspan="7" class="py-3 px-6 text-center">No stagiaires found</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </form>
 {% endblock %}
-
-{#iiiiiiii#}
