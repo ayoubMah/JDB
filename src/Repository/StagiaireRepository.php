@@ -17,7 +17,8 @@ class StagiaireRepository extends ServiceEntityRepository
      * @param string|null $searchQuery
      * @return Stagiaire[]
      */
-    public function findBySearchQuery(?string $searchQuery): array
+    public function findBySearchQuery
+    (?string $searchQuery): array
     {
         $queryBuilder = $this->createQueryBuilder('s');
 

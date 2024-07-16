@@ -1,15 +1,22 @@
+{# templates/stagiaire/index.html.twig #}
+
 {% extends 'base.html.twig' %}
+
 {% block title %}Stagiaire Index{% endblock %}
+
 {% block body %}
     <h1 class="text-2xl font-bold mb-4">Stagiaires</h1>
     <a href="{{ path('app_stagiaire_new') }}" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mb-4 inline-block">Create new</a>
-    <button id="reset-password" class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded mb-4 inline-block">Réinitialiser password</button>
+
     {# Search Form #}
-    <form action="{{ path('app_stagiaire_index') }}" method="get" class="mb-4 flex justify-end">
-        <input type="text" name="q" placeholder="Search..." class="border rounded py-2 px-3 text-gray-700">
-        <button type="submit" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded ml-2">Search</button>
+    <form action="{{ path('app_stagiaire_index') }}" method="get" class="mb-4">
+        <div class="flex justify-end">
+            <input type="text" name="q" placeholder="Search..." class="border rounded py-2 px-3 text-gray-700">
+            <button type="submit" class="bg-gray-500 hover:bg-gray-700 text-white font-bold py-2 px-4 rounded ml-2">Search</button>
+        </div>
+        <p class="text-gray-600 text-sm mt-2 text-right">You can search by ID, Nom, Prenom, Email, or Login.</p>
     </form>
-    <p class="text-gray-600 text-sm mb-4">You can search by ID, Nom, Prenom, Email, or Login.</p>
+
     {# Stagiaire Table with checkboxes #}
     <form id="stagiaire-form" action="{{ path('app_stagiaire_reset_password') }}" method="post">
         <table class="min-w-full bg-white shadow-md rounded my-6">
@@ -20,7 +27,7 @@
                 <th class="py-3 px-6 text-left">Nom</th>
                 <th class="py-3 px-6 text-left">Prenom</th>
                 <th class="py-3 px-6 text-left">Email</th>
-                <th class="py-3 px-6 text-left">LogIn</th>
+                <th class="py-3 px-6 text-left">Login</th>
                 <th class="py-3 px-6 text-center">Actions</th>
             </tr>
             </thead>
@@ -42,6 +49,11 @@
                             <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ stagiaire.id) }}">
                             <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded" onclick="return confirm('Are you sure?');">Delete</button>
                         </form>
+                        {# Add reset password button for each stagiaire #}
+                        <form method="post" action="{{ path('app_stagiaire_reset_password', {'id': stagiaire.id}) }}" style="display:inline-block;">
+                            <input type="hidden" name="_token" value="{{ csrf_token('reset_password' ~ stagiaire.id) }}">
+                            <button class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded">Reset Password</button>
+                        </form>
                     </td>
                 </tr>
             {% else %}
@@ -52,10 +64,4 @@
             </tbody>
         </table>
     </form>
-    <script>
-        document.getElementById('reset-password').addEventListener('click', function () {
-            let form = document.getElementById('stagiaire-form');
-            form.submit();
-        });
-    </script>
 {% endblock %}

@@ -1,5 +1,4 @@
 <?php
-
 // src/Form/StagiaireType.php
 
 namespace App\Form;
@@ -9,8 +8,8 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\EmailType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType; // Use PasswordType for password field
+use Symfony\Component\Form\Extension\Core\Type\IntegerType; // Use IntegerType for admin_id field
 
 class StagiaireType extends AbstractType
 {
@@ -19,15 +18,14 @@ class StagiaireType extends AbstractType
         $builder
             ->add('nom', TextType::class)
             ->add('prenom', TextType::class)
-            ->add('email', EmailType::class)
+            ->add('email', TextType::class)
             ->add('login', TextType::class)
-            // Password field can be included but not required for existing users
-            ->add('password', PasswordType::class, [
-                'required' => false,
-                'mapped' => false, // Do not map this field to the entity directly
-                'attr' => ['autocomplete' => 'new-password'],
+            ->add('admin_id', IntegerType::class, [
+                'attr' => ['class' => 'border rounded w-full py-2 px-3 text-gray-700'],
             ])
-            ->add('adminId', TextType::class);
+            ->add('password', PasswordType::class, [
+                'attr' => ['class' => 'border rounded w-full py-2 px-3 text-gray-700'],
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
