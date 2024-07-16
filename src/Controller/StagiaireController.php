@@ -6,11 +6,13 @@ use App\Entity\Stagiaire;
 use App\Form\StagiaireType;
 use App\Repository\StagiaireRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 #[Route('/stagiaire')]
 class StagiaireController extends AbstractController
@@ -104,6 +106,26 @@ class StagiaireController extends AbstractController
 
         return $this->redirectToRoute('app_stagiaire_index', [], Response::HTTP_SEE_OTHER);
     }
-}
 
+    #[Route('/reset-password', name: 'app_stagiaire_reset_password', methods: ['POST'])]
+    public function resetPassword(Request $request, StagiaireRepository $stagiaireRepository, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): JsonResponse
+    {
+        $selectedIds = $request->request->get('selected', []);
+        $newPassword = '123456789';
+        $hashedPassword = $passwordHasher->hashPassword(new Stagiaire(), $newPassword);
+
+        foreach ($selectedIds as $id) {
+            $stagiaire = $stagiaireRepository->find($id);
+            if ($stagiaire) {
+                $stagiaire->setPassword($hashedPassword);
+                $entityManager->persist($stagiaire);
+            }
+        }
+
+        $entityManager->flush();
+
+        return new JsonResponse(['message' => 'Password reset successfully for selected stagiaires'], Response::HTTP_OK);
+    }
+
+}
 //wwwwwwwwwwwwwwww
