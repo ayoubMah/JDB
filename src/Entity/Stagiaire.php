@@ -2,13 +2,11 @@
 
 namespace App\Entity;
 
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\StagiaireRepository;
 
 #[ORM\Entity(repositoryClass: StagiaireRepository::class)]
-class Stagiaire implements UserInterface, PasswordAuthenticatedUserInterface
+class Stagiaire
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -110,25 +108,5 @@ class Stagiaire implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getRoles(): array
-    {
-        // you can replace this with any roles you want for the user
-        return ['ROLE_USER'];
-    }
 
-    public function eraseCredentials(): void
-    {
-        // If you store any temporary, sensitive data on the user, clear it here
-    }
-
-    public function getUserIdentifier(): string
-    {
-        return $this->login;
-    }
-
-    public function getUsername(): string
-    {
-        // Deprecated method, but must be implemented as part of UserInterface
-        return $this->login;
-    }
 }

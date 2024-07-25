@@ -95,18 +95,7 @@ class StagiaireController extends AbstractController
         return $this->redirectToRoute('app_stagiaire_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('/reset-password/{id}', name: 'app_stagiaire_reset_password', methods: ['POST'])]
-    public function resetPassword(Stagiaire $stagiaire, EntityManagerInterface $entityManager): Response
-    {
-        if ($stagiaire) {
-            $stagiaire->setPassword('123456789'); // Set the new password directly
-            $entityManager->flush();
 
-            $this->addFlash('success', 'Le mot de passe a été réinitialisé à "123456789".');
-        }
-
-        return $this->redirectToRoute('app_stagiaire_index', [], Response::HTTP_SEE_OTHER);
-    }
 }
-?>
+
 
